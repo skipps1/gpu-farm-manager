@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.skipps.gpu_farm_manager.auth.dto.AuthResponse;
 import com.skipps.gpu_farm_manager.auth.dto.LoginRequest;
 import com.skipps.gpu_farm_manager.auth.dto.RegisterRequest;
+import com.skipps.gpu_farm_manager.exception.UserAlreadyExistsException;
 import com.skipps.gpu_farm_manager.user.Role;
 import com.skipps.gpu_farm_manager.user.UserModel;
 import com.skipps.gpu_farm_manager.user.UserRepository;
@@ -37,7 +38,7 @@ public class AuthService
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username is already in use: " + request.username());
+            throw UserAlreadyExistsException.withUsername(request.username());
         }
 
         UserModel user = UserModel.builder()
