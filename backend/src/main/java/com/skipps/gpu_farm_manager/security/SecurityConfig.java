@@ -37,6 +37,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/gpus/**").hasAnyRole("OPERATOR", "ADMINISTRATOR")
+                        .requestMatchers("/api/nodes/**").hasAnyRole("OPERATOR", "ADMINISTRATOR")
+                        .requestMatchers("/api/agent/**").hasAnyRole("OPERATOR", "ADMINISTRATOR")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
